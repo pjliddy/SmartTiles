@@ -516,13 +516,13 @@ def sendURL_SMS(path) {
 }
 
 def generateURL(path) {
-	//log.debug "resetOauth: $resetOauth"
+	log.debug "resetOauth: $settings.resetOauth, $resetOauth, $settings.resetOauth"
 	if (settings.resetOauth) {
 		log.debug "Reseting Access Token"
 		state.accessToken = null
 	}
 	
-	if (settings.resetOauth && !state.accessToken) {
+	if (settings.resetOauth || !state.accessToken) {
 		try {
 			createAccessToken()
 			log.debug "Creating new Access Token: $state.accessToken"
