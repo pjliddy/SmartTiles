@@ -31,7 +31,7 @@ definition(
 
 
 preferences {
-	page(name: "selectDevices", install: false, uninstall: true, nextPage: "viewURL") {
+	page(name: "selectDevices", install: false, uninstall: true, nextPage: "nextPage") {
     
         section("About") {
             paragraph "ActiON Dashboard, a SmartThings web client.\n\nYour home has a Home Page!™"
@@ -54,7 +54,7 @@ preferences {
 		}
 		
 		section() {
-			href "moretiles", title: "Other Tiles"
+			href "moreTiles", title: "Other Tiles"
 		}
 		
 		section() {
@@ -62,23 +62,7 @@ preferences {
 		}
     }
 	
-	page(name: "controlThings", title: "controlThings")
-	page(name: "videos", title: "videos")
-	page(name: "videoStreams", title: "videoStreams")
-	page(name: "videoStreamsMJPEG", title: "videoStreamsMJPEG")
-	page(name: "shortcuts", title: "shortcuts")
-	page(name: "dashboards", title: "dashboards")
-	page(name: "links", title: "links")
-	page(name: "preferences", title: "preferences")
-	page(name: "moretiles", title: "moretiles")
-	page(name: "authenticationPreferences", title: "authenticationPreferences")
-	page(name: "viewURL", title: "viewURL")
-}
-
-def appVersion() {"5.1.2"}
-
-def controlThings() {
-	dynamicPage(name: "controlThings", title: "Things", install: false) {
+	page(name: "controlThings", title: "Things", install: false) {
 		section("Control lights...") {
 			input "lights", "capability.switch", title: "Lights...", multiple: true, required: false
 			input "dimmerLights", "capability.switchLevel", title: "Dimmable Lights...", multiple: true, required: false
@@ -112,7 +96,22 @@ def controlThings() {
             input "weather", "device.smartweatherStationTile", title: "Weather...", multiple: true, required: false
         }
 	}
+	
+	page(name: "videos", title: "videos")
+	page(name: "videoStreams", title: "videoStreams")
+	page(name: "videoStreamsMJPEG", title: "videoStreamsMJPEG")
+	page(name: "shortcuts", title: "shortcuts")
+	page(name: "dashboards", title: "dashboards")
+	page(name: "links", title: "links")
+	page(name: "preferences", title: "preferences")
+	page(name: "moreTiles", title: "moreTiles")
+	page(name: "authenticationPreferences", title: "authenticationPreferences")
+	page(name: "resetOauth", title: "resetOauth")
+	page(name: "viewURL", title: "viewURL")
+	page(name: "nextPage", title: "nextPage")
 }
+
+def appVersion() {"5.1.2"}
 
 def videos() {
 	dynamicPage(name: "videos", title: "Video Streams", install: false) {
@@ -214,8 +213,8 @@ def dashboards() {
 	}
 }
 
-def moretiles() {
-	dynamicPage(name: "moretiles", title: "More Tiles", install: false) {
+def moreTiles() {
+	dynamicPage(name: "moreTiles", title: "More Tiles", install: false) {
 		section() {
 			input "showMode", title: "Mode", "bool", required: true, defaultValue: true
 			input "showHelloHome", title: "Hello, Home!", "bool", required: true, defaultValue: true
@@ -271,26 +270,44 @@ def authenticationPreferences() {
 	}
 }
 
-def viewURL() {
-	dynamicPage(name: "viewURL", title: " ${title ?: location.name} Dashboard URL", install:!resetOauth, nextPage: resetOauth ? "viewURL" : null) {
-		if (resetOauth) {
-			generateURL(null)
-			
-			section("Reset Access Token...") {
-				paragraph "You chose to reset Access Token in ActiON Dashboard preferences."
-				href "authenticationPreferences", title:"Reset Access Token", description: "Tap to set this option to \"OFF\""
-			}
-		} else {
-			section() {
-				paragraph "Copy the URL below to any modern browser to view ${title ?: location.name} Dashboard. Add a shortcut to home screen of your mobile device to run as a native app."
-				href url:"${generateURL("link").join()}", style:"embedded", required:false, title:"URL", description:"Tap to view, then click \"Done\""
-			}
-			
-			section("Send URL via SMS...") {
-				paragraph "Optionally, send SMS containing the URL of ${title ?: location.name} Dashboard to a phone number. The URL will be sent in two parts because it's too long."
-				input "phone", "phone", title: "Which phone?", required: false
-			}
+def resetOauth() {
+	dynamicPage(name: "resetOauth", title: " ${title ?: location.name} Dashboard URL", install:!resetOauth, nextPage: "nextPage") {
+		generateURL(null)
+		
+		section("Reset Access Token...") {
+			paragraph "You chose to reset Access Token in ActiON Dashboard preferences."
+			href "authenticationPreferences", title:"Reset Access Token", description: "Tap to set this option to \"OFF\""
 		}
+	}
+}
+
+def viewURL() {
+	dynamicPage(name: "viewURL", title: " ${title ?: location.name} Dashboard URL", install:!resetOauth, nextPage: null) {
+		section() {
+			paragraph "Copy the URL below to any modern browser to view ${title ?: location.name} Dashboard. Add a shortcut to home screen of your mobile device to run as a native app."
+			href url:"${generateURL("link").join()}", style:"embedded", required:false, title:"URL", description:"Tap to view, then click \"Done\""
+		}
+		
+		section("Send URL via SMS...") {
+			paragraph "Optionally, send SMS containing the URL of ${title ?: location.name} Dashboard to a phone number. The URL will be sent in two parts because it's too long."
+			input "phone", "phone", title: "Which phone?", required: false
+		}
+	}
+}
+
+def nextPage() {
+	if (!showClock) {
+		log.debug "nextPage moreTiles"
+		moreTiles()
+	} else if (!theme) {
+		log.debug "nextPage preferences"
+		preferences()
+	} else if (resetOauth) {
+		log.debug "nextPage resetOauth"
+		resetOauth()
+	} else {
+		log.debug "nextPage viewURL"
+		viewURL()
     }
 }
 
@@ -495,7 +512,7 @@ def sendURL_SMS(path) {
 }
 
 def generateURL(path) {
-	log.debug "resetOauth: $resetOauth"
+	//log.debug "resetOauth: $resetOauth"
 	if (resetOauth) {
 		log.debug "Reseting Access Token"
 		state.accessToken = null
