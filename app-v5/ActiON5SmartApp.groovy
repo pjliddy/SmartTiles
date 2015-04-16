@@ -271,7 +271,7 @@ def authenticationPreferences() {
 }
 
 def resetOauth() {
-	dynamicPage(name: "resetOauth", title: " ${title ?: location.name} Dashboard URL", install:!resetOauth, nextPage: "nextPage") {
+	dynamicPage(name: "resetOauth", title: " ${title ?: location.name} Dashboard URL", install:false, nextPage: "nextPage") {
 		generateURL(null)
 		
 		section("Reset Access Token...") {
@@ -282,7 +282,7 @@ def resetOauth() {
 }
 
 def viewURL() {
-	dynamicPage(name: "viewURL", title: " ${title ?: location.name} Dashboard URL", install:!resetOauth, nextPage: null) {
+	dynamicPage(name: "viewURL", title: " ${title ?: location.name} Dashboard URL", install:true, nextPage: null) {
 		section() {
 			paragraph "Copy the URL below to any modern browser to view ${title ?: location.name} Dashboard. Add a shortcut to home screen of your mobile device to run as a native app."
 			href url:"${generateURL("link").join()}", style:"embedded", required:false, title:"URL", description:"Tap to view, then click \"Done\""
@@ -296,13 +296,17 @@ def viewURL() {
 }
 
 def nextPage() {
+	log.debug "settings: $settings"
+	log.debug "settings.resetOauth: $settings.resetOauth"
+	if (settings.resetOauth) {log.debug "WTF!? $settings.resetOauth"}
+	
 	if (!showClock) {
 		log.debug "nextPage moreTiles"
 		moreTiles()
 	} else if (!theme) {
 		log.debug "nextPage preferences"
 		preferences()
-	} else if (resetOauth) {
+	} else if (settings.resetOauth) {
 		log.debug "nextPage resetOauth"
 		resetOauth()
 	} else {
@@ -513,12 +517,12 @@ def sendURL_SMS(path) {
 
 def generateURL(path) {
 	//log.debug "resetOauth: $resetOauth"
-	if (resetOauth) {
+	if (settings.resetOauth) {
 		log.debug "Reseting Access Token"
 		state.accessToken = null
 	}
 	
-	if (!resetOauth && !state.accessToken || resetOauth && !state.accessToken) {
+	if (settings.resetOauth && !state.accessToken) {
 		try {
 			createAccessToken()
 			log.debug "Creating new Access Token: $state.accessToken"
