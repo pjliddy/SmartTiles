@@ -31,10 +31,7 @@ definition(
 
 
 preferences {
-	log.debug "here 1 $params"
 	page(name: "selectDevices", install: false, uninstall: true, nextPage: "nextPage") {
-		log.debug "here 2 $params"
-    
         section("About") {
             paragraph "SmartTiles Dashboard, a SmartThings web client.\n\nYour home has a Home Page!™"
             paragraph "Version ${appVersion()}\n\n" +
@@ -56,12 +53,12 @@ preferences {
 		}
 		
 		section() {
-			href "preferences", title: "Preferences"
-		}
-		section() {
 			href "moreTiles", title: "Other Tiles"
 		}
 		
+		section() {
+			href "prefs", title: "Preferences"
+		}
     }
 	
 	page(name: "controlThings", title: "Things", install: false) {
@@ -105,7 +102,7 @@ preferences {
 	page(name: "shortcuts", title: "shortcuts")
 	page(name: "dashboards", title: "dashboards")
 	page(name: "links", title: "links")
-	page(name: "preferences", title: "preferences")
+	page(name: "prefs", title: "prefs")
 	page(name: "moreTiles", title: "moreTiles")
 	page(name: "authenticationPreferences", title: "authenticationPreferences")
 	page(name: "resetOauth", title: "resetOauth")
@@ -226,8 +223,8 @@ def moreTiles() {
 	}
 }
 
-def preferences() {
-	dynamicPage(name: "preferences", title: "Preferences", install: false) {
+def prefs() {
+	dynamicPage(name: "prefs", title: "Preferences", install: false) {
 		section() {
 			label title: "Title", required: false, defaultValue: "$location SmartTiles"
 		}
@@ -306,8 +303,8 @@ def nextPage() {
 		log.debug "nextPage moreTiles"
 		moreTiles()
 	} else if (!theme) {
-		log.debug "nextPage preferences"
-		preferences()
+		log.debug "nextPage prefs"
+		prefs()
 	} else if (settings.resetOauth) {
 		log.debug "nextPage resetOauth"
 		resetOauth()
