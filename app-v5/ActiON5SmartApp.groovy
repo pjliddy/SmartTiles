@@ -1,8 +1,8 @@
 ﻿/**
- *  ActiON Dashboard 5.1.2
+ *  SmartTiles 5.1.2
  *
  *  Visit Home Page for more information:
- *  http://action-dashboard.github.io/
+ *  http://SmartTiles.click
  *
  *  If you like this app, please support the developer via PayPal: donate@SmartTiles.click
  *
@@ -20,10 +20,10 @@
  *
  */
 definition(
-    name: "ActiON Dashboard ${appVersion()}",
+    name: "SmartTiles ${appVersion()}",
     namespace: "625alex",
     author: "Alex Malikov",
-    description: "ActiON Dashboard, a SmartThings web client.",
+    description: "SmartTiles Dashboard, a SmartThings web client.",
     category: "SmartThings Labs",
     iconUrl: "http://action-dashboard.github.io/icon.png",
     iconX2Url: "http://action-dashboard.github.io/icon.png",
@@ -36,7 +36,7 @@ preferences {
 		log.debug "here 2 $params"
     
         section("About") {
-            paragraph "ActiON Dashboard, a SmartThings web client.\n\nYour home has a Home Page!™"
+            paragraph "SmartTiles Dashboard, a SmartThings web client.\n\nYour home has a Home Page!™"
             paragraph "Version ${appVersion()}\n\n" +
             "If you like this app, please support the developer via PayPal:\n\ndonate@SmartTiles.click\n\n" +
             "Copyright © 2014 Alex Malikov"
@@ -229,7 +229,7 @@ def moreTiles() {
 def preferences() {
 	dynamicPage(name: "preferences", title: "Preferences", install: false) {
 		section() {
-			label title: "Title", required: false, defaultValue: "$location Dashboard"
+			label title: "Title", required: false, defaultValue: "$location SmartTiles"
 		}
 		
 		section() {
@@ -273,25 +273,25 @@ def authenticationPreferences() {
 }
 
 def resetOauth() {
-	dynamicPage(name: "resetOauth", title: " ${title ?: location.name} Dashboard URL", install:false, nextPage: "nextPage") {
+	dynamicPage(name: "resetOauth", title: "Reset Access Token", install:false, nextPage: "nextPage") {
 		generateURL(null)
 		
-		section("Reset Access Token...") {
-			paragraph "You chose to reset Access Token in ActiON Dashboard preferences."
+		section() {
+			paragraph "You chose to reset Access Token in SmartTiles preferences."
 			href "authenticationPreferences", title:"Reset Access Token", description: "Tap to set this option to \"OFF\""
 		}
 	}
 }
 
 def viewURL() {
-	dynamicPage(name: "viewURL", title: " ${title ?: location.name} Dashboard URL", install:true, nextPage: null) {
+	dynamicPage(name: "viewURL", title: "${title ?: location.name} SmartTiles URL", install:true, nextPage: null) {
 		section() {
-			paragraph "Copy the URL below to any modern browser to view ${title ?: location.name} Dashboard. Add a shortcut to home screen of your mobile device to run as a native app."
+			paragraph "Copy the URL below to any modern browser to view ${title ?: location.name} SmartTiles. Add a shortcut to home screen of your mobile device to run as a native app."
 			href url:"${generateURL("link").join()}", style:"embedded", required:false, title:"URL", description:"Tap to view, then click \"Done\""
 		}
 		
 		section("Send URL via SMS...") {
-			paragraph "Optionally, send SMS containing the URL of ${title ?: location.name} Dashboard to a phone number. The URL will be sent in two parts because it's too long."
+			paragraph "Optionally, send SMS containing the URL of ${title ?: location.name} SmartTiles to a phone number. The URL will be sent in two parts because it's too long."
 			input "phone", "phone", title: "Which phone?", required: false
 		}
 	}
@@ -509,7 +509,7 @@ def weatherRefresh() {
 def sendURL_SMS(path) {
 	generateURL(path)
 	if (state.accessToken) {
-		log.info "${title ?: location.name} ActiON Dashboard URL: ${generateURL("ui").join()}"
+		log.info "${title ?: location.name} SmartTiles URL: ${generateURL("ui").join()}"
 		if (phone) {
 			sendSmsMessage(phone, generateURL(path)[0])
 			sendSmsMessage(phone, generateURL(path)[1])
@@ -529,7 +529,7 @@ def generateURL(path) {
 			createAccessToken()
 			log.debug "Creating new Access Token: $state.accessToken"
 		} catch (ex) {
-			log.error "Did you forget to enable OAuth in SmartApp IDE settings for ActiON Dashboard?"
+			log.error "Did you forget to enable OAuth in SmartApp IDE settings for SmartTiles?"
 			log.error ex
 		}
 	}
@@ -971,7 +971,7 @@ def renderTiles() {"""<div class="tiles">\n${allDeviceData()?.collect{renderTile
 def renderWTFCloud() {"""<div data-role="popup" id="wtfcloud-popup" data-overlay-theme="b" class="wtfcloud"><div class="icon cloud" onclick="clearWTFCloud()"><i class="fa fa-cloud"></i></div><div class="icon message" onclick="clearWTFCloud()"><i class="fa fa-question"></i><i class="fa fa-exclamation"></i><i class='fa fa-refresh'></i></div></div>"""}
 
 def link() {render contentType: "text/html", data: """<!DOCTYPE html><html><head><meta charset="UTF-8" />
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /></head><body>${title ?: location.name} Dashboard URL:<br/><textarea rows="9" cols="30" style="font-size:10px;">${generateURL("ui").join()}</textarea><br/><br/>Copy the URL above and click Done.<br/></body></html>"""}
+<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" /></head><body>${title ?: location.name} SmartTiles URL:<br/><textarea rows="9" cols="30" style="font-size:10px;">${generateURL("ui").join()}</textarea><br/><br/>Copy the URL above and click Done.<br/></body></html>"""}
 
 def list() {render contentType: "text/html", data: """<!DOCTYPE html><html><head>${headList()}</head><body style='background-color:black; color: white'><ul class="list">\n${allDeviceData()?.collect{renderListItem(it)}.join("\n")}</ul></body></html>"""}
 
