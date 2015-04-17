@@ -31,7 +31,9 @@ definition(
 
 
 preferences {
+	log.debug "here 1 $params"
 	page(name: "selectDevices", install: false, uninstall: true, nextPage: "nextPage") {
+		log.debug "here 2 $params"
     
         section("About") {
             paragraph "ActiON Dashboard, a SmartThings web client.\n\nYour home has a Home Page!™"
@@ -54,12 +56,12 @@ preferences {
 		}
 		
 		section() {
+			href "preferences", title: "Preferences"
+		}
+		section() {
 			href "moreTiles", title: "Other Tiles"
 		}
 		
-		section() {
-			href "preferences", title: "Preferences"
-		}
     }
 	
 	page(name: "controlThings", title: "Things", install: false) {
