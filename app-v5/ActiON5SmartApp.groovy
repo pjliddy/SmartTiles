@@ -1,5 +1,5 @@
 ﻿/**
- *  SmartTiles 5.1.2
+ *  SmartTiles 5.2.0
  *
  *  Visit Home Page for more information:
  *  http://SmartTiles.click
@@ -92,6 +92,8 @@ preferences {
             input "battery", "capability.battery", title: "Battery Status...", multiple: true, required: false
             input "energy", "capability.energyMeter", title: "Energy Meters...", multiple: true, required: false
             input "power", "capability.powerMeter", title: "Power Meters...", multiple: true, required: false
+            input "acceleration", "capability.accelerationSensor", title: "Vibration Sensors...", multiple: true, required: false
+            input "luminosity", "capability.illuminanceMeasurement", title: "Luminosity Sensor...", multiple: true, required: false
             input "weather", "device.smartweatherStationTile", title: "Weather...", multiple: true, required: false
         }
 	}
@@ -110,7 +112,7 @@ preferences {
 	page(name: "nextPage")
 }
 
-def appVersion() {"5.1.2"}
+def appVersion() {"5.2.0"}
 
 def videos() {
 	dynamicPage(name: "videos", title: "Video Streams", install: false) {
@@ -213,6 +215,7 @@ def dashboards() {
 }
 
 def moreTiles(params) {
+	dynamicPage(name: "moreTiles", title: "More Tiles", install: false, nextPage: params?.main ? null : "nextPage") {
 		section() {
 			input "showMode", title: "Mode", "bool", required: true, defaultValue: true
 			input "showHelloHome", title: "Hello, Home!", "bool", required: true, defaultValue: true
@@ -223,6 +226,7 @@ def moreTiles(params) {
 }
 
 def prefs(params) {
+	dynamicPage(name: "prefs", title: "Preferences", install: false, nextPage: params?.main ? null : "nextPage") {
 		section() {
 			label title: "Title", required: false, defaultValue: "$location SmartTiles"
 		}
@@ -472,7 +476,9 @@ def initialize() {
     subscribe(presence, "presence", handler, [filterEvents: false])
     subscribe(temperature, "temperature", handler, [filterEvents: false])
     subscribe(humidity, "humidity", handler, [filterEvents: false])
+    subscribe(luminosity, "luminosity", handler, [filterEvents: false])
     subscribe(motion, "motion", handler, [filterEvents: false])
+    subscribe(acceleration, "acceleration", handler, [filterEvents: false])
     subscribe(water, "water", handler, [filterEvents: false])
     subscribe(battery, "battery", handler, [filterEvents: false])
     subscribe(energy, "energy", handler, [filterEvents: false])
@@ -803,6 +809,7 @@ def getTileIcons() {
 		light : [off : "<i class='inactive fa fa-fw fa-lightbulb-o st-light'></i>", on : "<i class='active fa fa-fw fa-lightbulb-o st-light-on'></i>"],
 		lock : [locked : "<i class='inactive fa fa-fw fa-lock st-lock'></i>", unlocked : "<i class='active fa fa-fw fa-unlock-alt st-unlock'></i>"],
 		motion : [active : "<i class='active fa fa-fw fa-exchange st-motion-active'></i>", inactive: "<i class='inactive fa fa-fw fa-exchange st-motion-inactive'></i>"],
+		acceleration : [active : "<i class='active fa fa-fw st-acceleration-active'>&#8779</i>", inactive: "<i class='inactive fa fa-fw st-acceleration-inactive'>&#8779</i>"],
 		presence : [present : "<i class='active fa fa-fw fa-map-marker st-present'></i>", notPresent: "<i class='inactive fa fa-fw fa-map-marker st-not-present'></i>"],
 		contact : [open : "<i class='active r45 fa fa-fw fa-expand st-opened'></i>", closed: "<i class='inactive r45 fa fa-fw fa-compress st-closed'></i>"],
 		water : [dry : "<i class='inactive fa fa-fw fa-tint st-dry'></i>", wet: "<i class='active fa fa-fw fa-tint st-wet'></i>"],
@@ -810,6 +817,7 @@ def getTileIcons() {
 		camera : "<i class='fa fa-fw fa-camera st-camera'></i>",
 		refresh : "<i class='fa fa-fw fa-refresh st-refresh'></i>",
 		humidity : "<i class='fa fa-fw wi wi-sprinkles st-humidity'></i>",
+		luminosity : "<i class='fa fa-fw st-luminosity'>&#9728;</i>",
 		temperature : "<i class='fa fa-fw wi wi-thermometer st-temperature'></i>",
 		energy : "<i class='fa fa-fw wi wi-lightning st-energy'></i>",
 		power : "<i class='fa fa-fw fa-bolt st-power'></i>",
@@ -840,6 +848,7 @@ def getListIcon(type) {
 		contact: getTileIcons().contact.open,
 		presence: getTileIcons().presence.present,
 		motion: getTileIcons().motion.active,
+		acceleration: getTileIcons().acceleration.active,
 		water: getTileIcons().water.wet,
 	]
 	
@@ -860,9 +869,9 @@ def getMusicPlayerData(device) {[tile: "device", type: "music", device: device.i
 
 def getDeviceData(device, type) {[tile: "device",  active: isActive(device, type), type: type, device: device.id, name: device.displayName, value: getDeviceValue(device, type), level: getDeviceLevel(device, type), isValue: isValue(device, type)]}
 
-def getDeviceFieldMap() {[lock: "lock", themeLight: "switch", light: "switch", "switch": "switch", dimmer: "switch", dimmerLight: "switch", contact: "contact", presence: "presence", temperature: "temperature", humidity: "humidity", motion: "motion", water: "water", power: "power", energy: "energy", battery: "battery"]}
+def getDeviceFieldMap() {[lock: "lock", themeLight: "switch", light: "switch", "switch": "switch", dimmer: "switch", dimmerLight: "switch", contact: "contact", presence: "presence", temperature: "temperature", humidity: "humidity", luminosity: "illuminance", motion: "motion", acceleration: "acceleration", water: "water", power: "power", energy: "energy", battery: "battery"]}
 
-def getActiveDeviceMap() {[lock: "unlocked", themeLight: "on", light: "on", "switch": "on", dimmer: "on", dimmerLight: "on", contact: "open", presence: "present", motion: "active", water: "wet"]}
+def getActiveDeviceMap() {[lock: "unlocked", themeLight: "on", light: "on", "switch": "on", dimmer: "on", dimmerLight: "on", contact: "open", presence: "present", motion: "active", acceleration: "active", water: "wet"]}
 
 def isValue(device, type) {!(["momentary", "camera"] << getActiveDeviceMap().keySet()).flatten().contains(type)}
 
@@ -878,7 +887,7 @@ def isActive(device, type) {
 }
 
 def getDeviceValue(device, type) {
-	def unitMap = [temperature: "°", humidity: "%", battery: "%", power: "W", energy: "kWh"]
+	def unitMap = [temperature: "°", humidity: "%", luminosity: "lx", battery: "%", power: "W", energy: "kWh"]
 	def field = getDeviceFieldMap()[type]
 	def value = "n/a"
 	try {
@@ -940,11 +949,13 @@ def allDeviceData() {
 	contacts?.each{data << getDeviceData(it, "contact")}
 	presence?.each{data << getDeviceData(it, "presence")}
 	motion?.each{data << getDeviceData(it, "motion")}
+	acceleration?.each{data << getDeviceData(it, "acceleration")}
 	camera?.each{data << getDeviceData(it, "camera")}
 	(1..10).each{if (settings["dropcamStreamUrl$it"]) {data << [tile: "video", device: "$it", link: settings["dropcamStreamUrl$it"], name: settings["dropcamStreamT$it"] ?: "Stream $it", i: it, type: "video"]}}
 	(1..10).each{if (settings["mjpegStreamUrl$it"]) {data << [tile: "genericMJPEGvideo", device: "$it", link: settings["mjpegStreamUrl$it"], name: settings["mjpegStreamTitile$it"] ?: "Stream $it", i: it, type: "video"]}}
 	temperature?.each{data << getDeviceData(it, "temperature")}
 	humidity?.each{data << getDeviceData(it, "humidity")}
+	luminosity?.each{data << getDeviceData(it, "luminosity")}
 	water?.each{data << getDeviceData(it, "water")}
 	energy?.each{data << getDeviceData(it, "energy")}
 	power?.each{data << getDeviceData(it, "power")}
