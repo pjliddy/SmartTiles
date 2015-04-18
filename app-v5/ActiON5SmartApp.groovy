@@ -53,11 +53,11 @@ preferences {
 		}
 		
 		section() {
-			href "moreTiles", title: "Other Tiles"
+			href "moreTiles", title: "Other Tiles", params: [main:true]
 		}
 		
 		section() {
-			href "prefs", title: "Preferences"
+			href "prefs", title: "Preferences", params: [main:true]
 		}
     }
 	
@@ -96,18 +96,18 @@ preferences {
         }
 	}
 	
-	page(name: "videos", title: "videos")
-	page(name: "videoStreams", title: "videoStreams")
-	page(name: "videoStreamsMJPEG", title: "videoStreamsMJPEG")
-	page(name: "shortcuts", title: "shortcuts")
-	page(name: "dashboards", title: "dashboards")
-	page(name: "links", title: "links")
-	page(name: "prefs", title: "prefs")
-	page(name: "moreTiles", title: "moreTiles")
-	page(name: "authenticationPreferences", title: "authenticationPreferences")
-	page(name: "resetOauth", title: "resetOauth")
-	page(name: "viewURL", title: "viewURL")
-	page(name: "nextPage", title: "nextPage")
+	page(name: "videos")
+	page(name: "videoStreams")
+	page(name: "videoStreamsMJPEG")
+	page(name: "shortcuts")
+	page(name: "dashboards")
+	page(name: "links")
+	page(name: "prefs")
+	page(name: "moreTiles")
+	page(name: "authenticationPreferences")
+	page(name: "resetOauth")
+	page(name: "viewURL")
+	page(name: "nextPage")
 }
 
 def appVersion() {"5.1.2"}
@@ -212,8 +212,7 @@ def dashboards() {
 	}
 }
 
-def moreTiles() {
-	dynamicPage(name: "moreTiles", title: "More Tiles", install: false) {
+def moreTiles(params) {
 		section() {
 			input "showMode", title: "Mode", "bool", required: true, defaultValue: true
 			input "showHelloHome", title: "Hello, Home!", "bool", required: true, defaultValue: true
@@ -223,8 +222,7 @@ def moreTiles() {
 	}
 }
 
-def prefs() {
-	dynamicPage(name: "prefs", title: "Preferences", install: false) {
+def prefs(params) {
 		section() {
 			label title: "Title", required: false, defaultValue: "$location SmartTiles"
 		}
@@ -295,8 +293,6 @@ def viewURL() {
 }
 
 def nextPage() {
-	log.debug "settings: $settings"
-	log.debug "settings.resetOauth: $settings.resetOauth"
 	if (settings.resetOauth) {log.debug "WTF!? $settings.resetOauth"}
 	
 	if (!showClock) {
