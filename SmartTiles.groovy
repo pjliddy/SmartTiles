@@ -1,4 +1,5 @@
-﻿/**
+
+/**
  *  SmartTiles 5.2.0
  *
  *  Visit Home Page for more information:
@@ -21,12 +22,12 @@
  */
 definition(
     name: "SmartTiles ${appVersion()}",
-    namespace: "625alex",
+    namespace: "50millstf",
     author: "Alex Malikov",
     description: "SmartTiles Dashboard, a SmartThings web client.",
     category: "SmartThings Labs",
-    iconUrl: "https://625alex.github.io/SmartTiles/prod/icon.png",
-    iconX2Url: "https://625alex.github.io/SmartTiles/prod/icon.png",
+    iconUrl: "https://pjliddy.github.io/dashboard/icon.png",
+    iconX2Url: "https://pjliddy.github.io/dashboard/icon.png",
     oauth: true)
 
 
@@ -542,17 +543,15 @@ def head() {
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-<link rel="icon" sizes="192x192" href="https://625alex.github.io/SmartTiles/prod/icon.png">
-<link rel="apple-touch-icon" href="https://625alex.github.io/SmartTiles/prod/icon.png">
+<link rel="icon" sizes="192x192" href="https://pjliddy.github.io/dashboard/icon.png">
+<link rel="apple-touch-icon" href="https://pjliddy.github.io/dashboard/icon.png">
 <meta name="mobile-web-app-capable" content="yes">
 <title>${app.label ?: location.name}</title>
-
 <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.3.2/css/weather-icons.min.css" />
 <link href="https://625alex.github.io/SmartTiles/prod/style.${appVersion()}.min.css?u=0" rel="stylesheet">
 <link href='https://fonts.googleapis.com/css?family=Mallanna' rel='stylesheet' type='text/css'>
-
 <script>
 window.location.hash = "";
 var stateTS = ${getStateTS()};
@@ -564,11 +563,9 @@ var minTemp = ${getMinTemp()};
 var maxTemp = ${getMaxTemp()};
 var theme = "$theme";
 </script>
-
 <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js" type="text/javascript"></script>
-<script src="https://625alex.github.io/SmartTiles/prod/script.${appVersion()}.min.js?u=0" type="text/javascript"></script>
-
+<script src="https://pjliddy.github.io/dashboard/script.js.min" type="text/javascript"></script>
 <style>
 .tile {width: ${getTSize()}px; height: ${getTSize()}px;}
 .w2 {width: ${getTSize() * 2}px;}
@@ -613,17 +610,14 @@ def headList() {
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 <title>${app.label ?: location.name} Device Order</title>
-
 <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.3.2/css/weather-icons.min.css" />
 <link href="https://625alex.github.io/SmartTiles/prod/style.${appVersion()}.min.css?u=0" rel="stylesheet">
 <link href='https://fonts.googleapis.com/css?family=Mallanna' rel='stylesheet' type='text/css'>
-
 <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
 <script src="https://625alex.github.io/SmartTiles/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
-
 <script>
 	\$(function() {
 		\$( ".list" ).sortable({
@@ -631,7 +625,6 @@ def headList() {
 		});
 		\$( ".list" ).disableSelection();
 	});
-
 	function changeOrder() {
 		var l = "";
 		\$( ".list li" ).each(function(index) {
@@ -782,7 +775,7 @@ def renderTile(data) {
 		return """<div class="video tile h2 w2" data-link-i="$data.i"><div class="title">$data.name</div><div class="icon" style="margin-top:-82px;"><object width="240" height="164"><img src="$data.link" width="240" height="164"></object></div></div>"""
 	} else if (data.tile == "refresh") {
 		if (showRefresh) {
-			return """<div class="refresh tile clickable"><div class="title">Refresh</div><div class="footer">Updated $data.ts</div></div>"""
+			return """<div class="refresh tile clickable"><div class="title">Refresh</div><div class="footer">$data.ts</div></div>"""
 		} else {
 			return ""
 		}
@@ -806,14 +799,14 @@ def getTileIcons() {
 		dimmer : [off : "<i class='inactive fa fa-fw fa-toggle-off st-switch-off'></i>", on : "<i class='active fa fa-fw fa-toggle-on st-switch-on'></i>"],
 		dimmerLight : [off : "<i class='inactive fa fa-fw fa-lightbulb-o st-light-off'></i>", on : "<i class='active fa fa-fw fa-lightbulb-o st-light-on'></i>"],
 		switch : [off : "<i class='inactive fa fa-fw fa-toggle-off st-switch-off'></i>", on : "<i class='active fa fa-fw fa-fw fa-toggle-on st-switch-on'></i>"],
-		light : [off : "<i class='inactive fa fa-fw fa-lightbulb-o st-light'></i>", on : "<i class='active fa fa-fw fa-lightbulb-o st-light-on'></i>"],
+		light : [off : "<i class='inactive fa fa-fw fa-circle-o st-light'></i>", on : "<i class='active fa fa-fw fa-dot-circle-o st-light-on'></i>"],
 		lock : [locked : "<i class='inactive fa fa-fw fa-lock st-lock'></i>", unlocked : "<i class='active fa fa-fw fa-unlock-alt st-unlock'></i>"],
 		motion : [active : "<i class='active fa fa-fw fa-exchange st-motion-active'></i>", inactive: "<i class='inactive fa fa-fw fa-exchange st-motion-inactive'></i>"],
 		acceleration : [active : "<i class='active fa fa-fw st-acceleration-active'>&#8779</i>", inactive: "<i class='inactive fa fa-fw st-acceleration-inactive'>&#8779</i>"],
-		presence : [present : "<i class='active fa fa-fw fa-map-marker st-present'></i>", notPresent: "<i class='inactive fa fa-fw fa-map-marker st-not-present'></i>"],
+		presence : [present : "<i class='active fa fa-fw fa-mobile st-present'></i>", notPresent: "<i class='inactive fa fa-fw fa-map-marker st-not-present'></i>"],
 		contact : [open : "<i class='active r45 fa fa-fw fa-expand st-opened'></i>", closed: "<i class='inactive r45 fa fa-fw fa-compress st-closed'></i>"],
 		water : [dry : "<i class='inactive fa fa-fw fa-tint st-dry'></i>", wet: "<i class='active fa fa-fw fa-tint st-wet'></i>"],
-		momentary : "<i class='fa fa-fw fa-circle-o st-momentary'></i>",
+		momentary : "<i class='fa fa-fw fa-power-off st-momentary'></i>",
 		camera : "<i class='fa fa-fw fa-camera st-camera'></i>",
 		refresh : "<i class='fa fa-fw fa-refresh st-refresh'></i>",
 		humidity : "<i class='fa fa-fw wi wi-sprinkles st-humidity'></i>",
@@ -824,7 +817,7 @@ def getTileIcons() {
 		battery : "<i class='fa fa-fw fa-fw batt st-battery'></i>",
         "hello-home" : "<i class='fa fa-fw fa-comment-o st-hello-home'></i>",
         link : "<i class='fa fa-fw fa-link st-link'></i>",
-        dashboard : "<i class='fa fa-fw fa-th st-dashboard'></i>",
+        dashboard : "<i class='fa fa-fw fa-sliders st-dashboard'></i>",
         thermostatHeat : "<i class='fa fa-fw fa-fire st-heat'></i>",
         thermostatCool : "<i class='fa fa-fw wi wi-snowflake-cold st-cool'></i>",
 		themeLight: getThemeLightIcon(),
@@ -984,7 +977,36 @@ def customCSS() {
 <style>
 /*** Custonm CSS Start ***/
 
+.title{left:6px;color:#ffffff;}
+
+.footer {font-size:.9em;bottom:.75em;color:#ffffff;}
+.footer i{font-size:1.25em;}
+
+.title {line-height:1.1em;top:4px;}
+.title2{font-size:1em;}
+
+.tile{background-color:#404c5d;}
+
+.presence {color: #ffffff;}
+
+.thermostatHeat, .thermostatCool{background-color:#546371;}
+.thermostatHeat{color: #ff9f40;} /*orange*/
+.thermostatCool{color: #80d4ff;} /*cyan*/
+
+.thermostatHeat .footer, .thermostatCool .footer{left:4px;}
+
+.thermostatHeat .icon.up, .thermostatCool .icon.up {margin-top: -2.5em; font-size:2em; line-height:2em;}
+.thermostatHeat .icon.down, .thermostatCool .icon.down {margin-top: .5em; font-size:2em; line-height:2em;}
+
+.momentary {color: #ffffff;} /*white*/
+.momentary .icon{font-size:2.5em;}
+
+.dashboard{background-color:#404c5d;}
+
+.wi-thermometer{left:0px;}
+
 /*** Custonm CSS End *****/
 </style>
 """
 }
+
