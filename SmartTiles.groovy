@@ -551,7 +551,7 @@ def head() {
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.3.2/css/weather-icons.min.css" />
 <link href="https://625alex.github.io/SmartTiles/prod/style.${appVersion()}.min.css?u=0" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Mallanna' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <script>
 window.location.hash = "";
 var stateTS = ${getStateTS()};
@@ -585,13 +585,13 @@ def footer() {
   wall.fitWidth();
   
   wall.reset({
-			draggable: false,
-			selector: '.tile',
+		draggable: false,
+		selector: '.tile',
 		animate: true,
 		gutterX:cellGutter,
 		gutterY:cellGutter,
 		cellW:cellSize,
-		cellH:cellSize,
+		cellH:cellSize*.93,
 		fixSize:null,
 		onResize: function() {
 			wall.fitWidth();
@@ -614,7 +614,7 @@ def headList() {
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.3.2/css/weather-icons.min.css" />
 <link href="https://625alex.github.io/SmartTiles/prod/style.${appVersion()}.min.css?u=0" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Mallanna' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
 <script src="https://625alex.github.io/SmartTiles/jquery.ui.touch-punch.min.js" type="text/javascript"></script>
@@ -752,7 +752,7 @@ def getThermostatData(device, type) {
 
 def renderTile(data) {
 	if (data.type == "thermostatHeat" || data.type == "thermostatCool") {
-		return  """<div class="$data.type tile h2" data-type="$data.type" data-device="$data.device" data-setpoint="$data.setpoint"><div class="title">$data.name ${getTileIcons()[data.type]}<br/><span class="title2">${data.temperature}&deg;, $data.thermostatOperatingState</span></div><div class="icon setpoint">$data.setpoint&deg;</div><div class="icon up"><i class="fa fa-fw fa-chevron-up"></i></div><div class="icon down"><i class="fa fa-fw fa-chevron-down"></i></div><div class="footer">&#10044; $data.thermostatFanMode ${data.humidity ? ",<i class='fa fa-fw wi wi-sprinkles'></i>" + data.humidity  + "%" : ""}</div></div>"""
+		return  """<div class="$data.type tile h2" data-type="$data.type" data-device="$data.device" data-setpoint="$data.setpoint"><div class="title">$data.name ${getTileIcons()[data.type]}<br><span class="title2">&#10044; $data.thermostatFanMode, $data.thermostatOperatingState</span></div><div class="icon setpoint">$data.setpoint&deg;</div><div class="icon up"><i class="fa fa-fw fa-chevron-up"></i></div><div class="icon down"><i class="fa fa-fw fa-chevron-down"></i></div><div class="footer"><i class='fa fa-fw wi wi-thermometer'></i> ${data.temperature}&deg;, <i class='fa fa-fw wi wi-sprinkles'></i> $data.humidity%</div></div>"""
 	} else if (data.type == "weather"){
 		return """<div class="weather tile w2" data-type="weather" data-device="$data.device" data-weather="$data.weatherIcon"><div class="title">$data.city<br/><span class="title2">$data.weather, feels like $data.feelsLike&deg;</span></div><div class="icon"><span class="text">$data.temperature&deg;</span><i class="wi $data.icon"></i></span></div><div class="footer">$data.localSunrise <i class="fa fa-fw wi wi-horizon-alt"></i> $data.localSunset</div><div class="footer right">$data.percentPrecip%<i class="fa fa-fw fa-umbrella"></i><br>$data.humidity%<i class="fa fa-fw wi wi-sprinkles"></i></div></div>"""
 	} else if (data.type == "music") {
@@ -799,14 +799,14 @@ def getTileIcons() {
 		dimmer : [off : "<i class='inactive fa fa-fw fa-toggle-off st-switch-off'></i>", on : "<i class='active fa fa-fw fa-toggle-on st-switch-on'></i>"],
 		dimmerLight : [off : "<i class='inactive fa fa-fw fa-lightbulb-o st-light-off'></i>", on : "<i class='active fa fa-fw fa-lightbulb-o st-light-on'></i>"],
 		switch : [off : "<i class='inactive fa fa-fw fa-toggle-off st-switch-off'></i>", on : "<i class='active fa fa-fw fa-fw fa-toggle-on st-switch-on'></i>"],
-		light : [off : "<i class='inactive fa fa-fw fa-circle-o st-light'></i>", on : "<i class='active fa fa-fw fa-dot-circle-o st-light-on'></i>"],
+		light : [off : "<i class='inactive fa fa-fw fa-power-off st-light'></i>", on : "<i class='active fa fa-fw fa-power-off st-light-on'></i>"],
 		lock : [locked : "<i class='inactive fa fa-fw fa-lock st-lock'></i>", unlocked : "<i class='active fa fa-fw fa-unlock-alt st-unlock'></i>"],
 		motion : [active : "<i class='active fa fa-fw fa-exchange st-motion-active'></i>", inactive: "<i class='inactive fa fa-fw fa-exchange st-motion-inactive'></i>"],
 		acceleration : [active : "<i class='active fa fa-fw st-acceleration-active'>&#8779</i>", inactive: "<i class='inactive fa fa-fw st-acceleration-inactive'>&#8779</i>"],
 		presence : [present : "<i class='active fa fa-fw fa-mobile st-present'></i>", notPresent: "<i class='inactive fa fa-fw fa-map-marker st-not-present'></i>"],
 		contact : [open : "<i class='active r45 fa fa-fw fa-expand st-opened'></i>", closed: "<i class='inactive r45 fa fa-fw fa-compress st-closed'></i>"],
 		water : [dry : "<i class='inactive fa fa-fw fa-tint st-dry'></i>", wet: "<i class='active fa fa-fw fa-tint st-wet'></i>"],
-		momentary : "<i class='fa fa-fw fa-power-off st-momentary'></i>",
+		momentary : "<i class='fa fa-fw fa-circle-o st-momentary'></i>",
 		camera : "<i class='fa fa-fw fa-camera st-camera'></i>",
 		refresh : "<i class='fa fa-fw fa-refresh st-refresh'></i>",
 		humidity : "<i class='fa fa-fw wi wi-sprinkles st-humidity'></i>",
@@ -975,38 +975,82 @@ def list() {render contentType: "text/html", data: """<!DOCTYPE html><html><head
 def customCSS() {
 """
 <style>
-/*** Custonm CSS Start ***/
+/*** Custom CSS Start ***/
+* {
+	text-shadow:none;
+    font-family:"Source Sans Pro",Verdana,Arial,Helvetica,sans-serif;
+    font-weight:300;
+}
+.title {
+	left:6px;color:#ffffff;
+	line-height:1.1em;
+	top:4px;
+}
+.title2 {
+	font-size:1em;
+}
+.icon {
+	font-size:2.25em;
+}
+.footer{
+	font-size:.9em;
+    bottom:.5em;
+    color:#ffffff;
+    display:block;
+    clear:both;
+}
+.footer i {
+	font-size:1.25em;
+}
+.tile {
+	background-color:#546371;
+}
+.momentary {
+	background-color:#404c5d;
+	color: #ffffff;
+}
+.momentary .icon {
+	font-size:2.25em;
+}
+.presence, .refresh, .lock {
+	background-color:#303a40;
+}
 
-.title{left:6px;color:#ffffff;}
-
-.footer {font-size:.9em;bottom:.75em;color:#ffffff;}
-.footer i{font-size:1.25em;}
-
-.title {line-height:1.1em;top:4px;}
-.title2{font-size:1em;}
-
-.tile{background-color:#404c5d;}
-
-.presence {color: #ffffff;}
-
-.thermostatHeat, .thermostatCool{background-color:#546371;}
-.thermostatHeat{color: #ff9f40;} /*orange*/
-.thermostatCool{color: #80d4ff;} /*cyan*/
-
-.thermostatHeat .footer, .thermostatCool .footer{left:4px;}
-
-.thermostatHeat .icon.up, .thermostatCool .icon.up {margin-top: -2.5em; font-size:2em; line-height:2em;}
-.thermostatHeat .icon.down, .thermostatCool .icon.down {margin-top: .5em; font-size:2em; line-height:2em;}
-
-.momentary {color: #ffffff;} /*white*/
-.momentary .icon{font-size:2.5em;}
-
-.dashboard{background-color:#404c5d;}
-
-.wi-thermometer{left:0px;}
-
-/*** Custonm CSS End *****/
+.dashboard {
+	background-color:#404c5d;
+}
+.thermostatHeat {
+	background-color: #cc5f29;
+	color:#ffffff;
+}
+.thermostatCool {
+	background-color: #3d7a99;
+	color:#ffffff;
+}
+.thermostatHeat .footer, .thermostatCool .footer {
+	left:4px;
+}
+.thermostatHeat .icon.up, .thermostatCool .icon.up {
+	margin-top: -2.5em;
+	line-height:2em;
+}
+.thermostatHeat .icon.down, .thermostatCool .icon.down {
+	margin-top: .5em;
+	line-height:2em;
+}
+.wi-thermometer, .wi-sprinkles {
+	margin-left:-4px;
+    margin-right:-4px;
+}
+.footer .float-left{
+	float:left;
+}
+.footer .float-right{
+	float:right;
+	right:0px;
+	left:auto;
+}
+/*** Custom CSS End *****/
 </style>
 """
 }
-
