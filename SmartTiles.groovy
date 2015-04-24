@@ -565,7 +565,7 @@ var theme = "$theme";
 </script>
 <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js" type="text/javascript"></script>
-<script src="https://pjliddy.github.io/dashboard/script.js.min" type="text/javascript"></script>
+<script src="https://pjliddy.github.io/dashboard/script.min.js" type="text/javascript"></script>
 <style>
 .tile {width: ${getTSize()}px; height: ${getTSize()}px;}
 .w2 {width: ${getTSize() * 2}px;}
@@ -752,7 +752,7 @@ def getThermostatData(device, type) {
 
 def renderTile(data) {
 	if (data.type == "thermostatHeat" || data.type == "thermostatCool") {
-		return  """<div class="$data.type tile h2" data-type="$data.type" data-device="$data.device" data-setpoint="$data.setpoint"><div class="title">$data.name ${getTileIcons()[data.type]}<br><span class="title2">&#10044; $data.thermostatFanMode, $data.thermostatOperatingState</span></div><div class="icon setpoint">$data.setpoint&deg;</div><div class="icon up"><i class="fa fa-fw fa-chevron-up"></i></div><div class="icon down"><i class="fa fa-fw fa-chevron-down"></i></div><div class="footer"><i class='fa fa-fw wi wi-thermometer'></i> ${data.temperature}&deg;, <i class='fa fa-fw wi wi-sprinkles'></i> $data.humidity%</div></div>"""
+		return  """<div class="$data.type tile h2" data-type="$data.type" data-device="$data.device" data-setpoint="$data.setpoint"><div class="title">$data.name ${getTileIcons()[data.type]}<br><span class="title2">&#10044; $data.thermostatFanMode, $data.thermostatOperatingState</span></div><div class="icon setpoint">$data.setpoint&deg;</div><div class="icon up"><i class="fa fa-fw fa-chevron-up"></i></div><div class="icon down"><i class="fa fa-fw fa-chevron-down"></i></div><div class="footer"><i class='fa fa-fw wi wi-thermometer'></i> ${data.temperature}&deg; <i class='fa fa-fw wi wi-sprinkles'></i> $data.humidity%</div></div>"""
 	} else if (data.type == "weather"){
 		return """<div class="weather tile w2" data-type="weather" data-device="$data.device" data-weather="$data.weatherIcon"><div class="title">$data.city<br/><span class="title2">$data.weather, feels like $data.feelsLike&deg;</span></div><div class="icon"><span class="text">$data.temperature&deg;</span><i class="wi $data.icon"></i></span></div><div class="footer">$data.localSunrise <i class="fa fa-fw wi wi-horizon-alt"></i> $data.localSunset</div><div class="footer right">$data.percentPrecip%<i class="fa fa-fw fa-umbrella"></i><br>$data.humidity%<i class="fa fa-fw wi wi-sprinkles"></i></div></div>"""
 	} else if (data.type == "music") {
@@ -806,7 +806,7 @@ def getTileIcons() {
 		presence : [present : "<i class='active fa fa-fw fa-mobile st-present'></i>", notPresent: "<i class='inactive fa fa-fw fa-map-marker st-not-present'></i>"],
 		contact : [open : "<i class='active r45 fa fa-fw fa-expand st-opened'></i>", closed: "<i class='inactive r45 fa fa-fw fa-compress st-closed'></i>"],
 		water : [dry : "<i class='inactive fa fa-fw fa-tint st-dry'></i>", wet: "<i class='active fa fa-fw fa-tint st-wet'></i>"],
-		momentary : "<i class='fa fa-fw fa-circle-o st-momentary'></i>",
+		momentary : "<i class='fa fa-fw fa-play-circle st-momentary'></i>",
 		camera : "<i class='fa fa-fw fa-camera st-camera'></i>",
 		refresh : "<i class='fa fa-fw fa-refresh st-refresh'></i>",
 		humidity : "<i class='fa fa-fw wi wi-sprinkles st-humidity'></i>",
@@ -817,7 +817,7 @@ def getTileIcons() {
 		battery : "<i class='fa fa-fw fa-fw batt st-battery'></i>",
         "hello-home" : "<i class='fa fa-fw fa-comment-o st-hello-home'></i>",
         link : "<i class='fa fa-fw fa-link st-link'></i>",
-        dashboard : "<i class='fa fa-fw fa-sliders st-dashboard'></i>",
+        dashboard : "<i class='fa fa-fw fa-th st-dashboard'></i>",
         thermostatHeat : "<i class='fa fa-fw fa-fire st-heat'></i>",
         thermostatCool : "<i class='fa fa-fw wi wi-snowflake-cold st-cool'></i>",
 		themeLight: getThemeLightIcon(),
@@ -996,8 +996,6 @@ def customCSS() {
 	font-size:.9em;
     bottom:.5em;
     color:#ffffff;
-    display:block;
-    clear:both;
 }
 .footer i {
 	font-size:1.25em;
@@ -1039,17 +1037,11 @@ def customCSS() {
 	line-height:2em;
 }
 .wi-thermometer, .wi-sprinkles {
-	margin-left:-4px;
-    margin-right:-4px;
+	margin-left:-6px;
+    margin-right:-6px;
 }
-.footer .float-left{
-	float:left;
-}
-.footer .float-right{
-	float:right;
-	right:0px;
-	left:auto;
-}
+
+
 /*** Custom CSS End *****/
 </style>
 """
