@@ -591,7 +591,7 @@ def footer() {
 		gutterX:cellGutter,
 		gutterY:cellGutter,
 		cellW:cellSize,
-		cellH:cellSize*.93,
+		cellH:cellSize*.98,
 		fixSize:null,
 		onResize: function() {
 			wall.fitWidth();
@@ -696,7 +696,7 @@ def getDOW() {
 }
 
 def renderModeTile(data) {
-"""<div class="mode tile w2 menu ${data.isStandardMode ? data.mode : ""}" data-mode="$data.mode" data-popup="mode-popup">
+"""<div class="mode tile menu ${data.isStandardMode ? data.mode : ""}" data-mode="$data.mode" data-popup="mode-popup">
 	<div class="title">Mode</div>
 	<div data-role="popup" id="mode-popup" data-overlay-theme="b">
 		<ul data-role="listview" data-inset="true" style="min-width:210px;">
@@ -754,7 +754,7 @@ def renderTile(data) {
 	if (data.type == "thermostatHeat" || data.type == "thermostatCool") {
 		return  """<div class="$data.type tile h2" data-type="$data.type" data-device="$data.device" data-setpoint="$data.setpoint"><div class="title">$data.name ${getTileIcons()[data.type]}<br><span class="title2">&#10044; $data.thermostatFanMode, $data.thermostatOperatingState</span></div><div class="icon setpoint">$data.setpoint&deg;</div><div class="icon up"><i class="fa fa-fw fa-chevron-up"></i></div><div class="icon down"><i class="fa fa-fw fa-chevron-down"></i></div><div class="footer"><i class='fa fa-fw wi wi-thermometer'></i> ${data.temperature}&deg; <i class='fa fa-fw wi wi-sprinkles'></i> $data.humidity%</div></div>"""
 	} else if (data.type == "weather"){
-		return """<div class="weather tile w2" data-type="weather" data-device="$data.device" data-weather="$data.weatherIcon"><div class="title">$data.city<br/><span class="title2">$data.weather, feels like $data.feelsLike&deg;</span></div><div class="icon"><span class="text">$data.temperature&deg;</span><i class="wi $data.icon"></i></span></div><div class="footer">$data.localSunrise <i class="fa fa-fw wi wi-horizon-alt"></i> $data.localSunset</div><div class="footer right">$data.percentPrecip%<i class="fa fa-fw fa-umbrella"></i><br>$data.humidity%<i class="fa fa-fw wi wi-sprinkles"></i></div></div>"""
+		return """<div class="weather tile w2" data-type="weather" data-device="$data.device" data-weather="$data.weatherIcon"><div class="title">$data.city<br/><span class="title2">$data.weather, feels like $data.feelsLike&deg;</span></div><div class="icon"><span class="text">$data.temperature&deg;</span><i class="wi $data.icon"></i></span></div><div class="footer">$data.localSunrise <i class="fa fa-fw wi wi-horizon-alt"></i> $data.localSunset</div><div class="footer right"><i class="fa fa-fw fa-umbrella"></i>$data.percentPrecip%<br><i class="fa fa-fw wi wi-sprinkles"></i>$data.humidity%</div></div>"""
 	} else if (data.type == "music") {
 		return """
 		<div class="music tile w2 $data.active ${data.mute ? "muted" : ""}" data-type="music" data-device="$data.device" data-level="$data.level" data-track-description="$data.trackDescription" data-mute="$data.mute">
@@ -799,7 +799,7 @@ def getTileIcons() {
 		dimmer : [off : "<i class='inactive fa fa-fw fa-toggle-off st-switch-off'></i>", on : "<i class='active fa fa-fw fa-toggle-on st-switch-on'></i>"],
 		dimmerLight : [off : "<i class='inactive fa fa-fw fa-lightbulb-o st-light-off'></i>", on : "<i class='active fa fa-fw fa-lightbulb-o st-light-on'></i>"],
 		switch : [off : "<i class='inactive fa fa-fw fa-toggle-off st-switch-off'></i>", on : "<i class='active fa fa-fw fa-fw fa-toggle-on st-switch-on'></i>"],
-		light : [off : "<i class='inactive fa fa-fw fa-power-off st-light'></i>", on : "<i class='active fa fa-fw fa-power-off st-light-on'></i>"],
+		light : [off : "<i class='inactive fa fa-fw fa-lightbulb-o st-light'></i>", on : "<i class='active fa fa-fw fa-lightbulb-o st-light-on'></i>"],
 		lock : [locked : "<i class='inactive fa fa-fw fa-lock st-lock'></i>", unlocked : "<i class='active fa fa-fw fa-unlock-alt st-unlock'></i>"],
 		motion : [active : "<i class='active fa fa-fw fa-exchange st-motion-active'></i>", inactive: "<i class='inactive fa fa-fw fa-exchange st-motion-inactive'></i>"],
 		acceleration : [active : "<i class='active fa fa-fw st-acceleration-active'>&#8779</i>", inactive: "<i class='inactive fa fa-fw st-acceleration-inactive'>&#8779</i>"],
@@ -980,20 +980,26 @@ def customCSS() {
 	text-shadow:none;
     font-family:"Source Sans Pro",Verdana,Arial,Helvetica,sans-serif;
     font-weight:300;
+    font-size:16px;
+    line-height:1.1em;
 }
 .title {
-	left:6px;color:#ffffff;
-	line-height:1.1em;
-	top:4px;
+	left:6px;
+    color:#ffffff;
+    top:4px;
+    font-size:1em;
+    line-height:1.1em;
 }
 .title2 {
-	font-size:1em;
+    font-size:.9em;
+    line-height:1.25em;
+
 }
 .icon {
 	font-size:2.25em;
 }
 .footer{
-	font-size:.9em;
+	font-size:1em;
     bottom:.5em;
     color:#ffffff;
 }
@@ -1003,6 +1009,25 @@ def customCSS() {
 .tile {
 	background-color:#546371;
 }
+.weather, .mode{
+	background-color:#004766;
+}
+.weather .icon{
+	font-size:2em;
+}
+.lock {
+	background-color:#661F1F;
+}
+.contact {
+	 background-color:#6c797f;
+}
+.battery {
+	 background-color:#303A40;
+	 color:#ffffff;
+}
+.battery .icon{
+	font-size: 1.25em;
+}
 .momentary {
 	background-color:#404c5d;
 	color: #ffffff;
@@ -1010,10 +1035,9 @@ def customCSS() {
 .momentary .icon {
 	font-size:2.25em;
 }
-.presence, .refresh, .lock {
-	background-color:#303a40;
+.presence, .refresh {
+	background-color:#1D2326;
 }
-
 .dashboard {
 	background-color:#404c5d;
 }
@@ -1025,9 +1049,6 @@ def customCSS() {
 	background-color: #3d7a99;
 	color:#ffffff;
 }
-.thermostatHeat .footer, .thermostatCool .footer {
-	left:4px;
-}
 .thermostatHeat .icon.up, .thermostatCool .icon.up {
 	margin-top: -2.5em;
 	line-height:2em;
@@ -1036,11 +1057,11 @@ def customCSS() {
 	margin-top: .5em;
 	line-height:2em;
 }
-.wi-thermometer, .wi-sprinkles {
+.thermostatCool .wi-thermometer, .thermostatCool .wi-sprinkles,
+.thermostatHeat .wi-thermometer, .thermostatHeat .wi-sprinkles {
 	margin-left:-6px;
-    margin-right:-6px;
+	margin-right:-6px;
 }
-
 
 /*** Custom CSS End *****/
 </style>
