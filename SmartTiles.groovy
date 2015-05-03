@@ -1007,10 +1007,13 @@ def customCSS() {
 	font-size:1.25em;
 }
 .tile {
-	background-color:#546371;
-}
-.weather, .mode{
 	background-color:#004766;
+}
+.refresh {
+	background-color:#1D2326;
+}
+.weather, .mode, .presence, .refresh {
+	background-color:#1D2326;
 }
 .weather .icon{
 	font-size:2em;
@@ -1019,24 +1022,21 @@ def customCSS() {
 	background-color:#661F1F;
 }
 .contact {
-	 background-color:#6c797f;
+	 background-color:#485266;
 }
 .battery {
-	 background-color:#303A40;
+	 background-color:#2F3A3F ;
 	 color:#ffffff;
 }
 .battery .icon{
 	font-size: 1.25em;
 }
 .momentary {
-	background-color:#404c5d;
+	background-color:#33664B;
 	color: #ffffff;
 }
 .momentary .icon {
 	font-size:2.25em;
-}
-.presence, .refresh {
-	background-color:#1D2326;
 }
 .dashboard {
 	background-color:#404c5d;
