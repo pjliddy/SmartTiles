@@ -1301,7 +1301,7 @@ function renderValue(t) {
     t.find(".icon").remove(), t.append("<div class='icon text'>" + t.attr("data-value") + "</div>")
 }
 function updateWeather(t, e) {
-    t.find(".title2").html(e.weather + ", feels like " + e.feelsLike + "&deg;"), t.find(".icon.text").html(e.temperature + "&deg;"), t.find(".icon i").attr("class", "wi " + e.icon), t.find(".footer").html(e.localSunrise + ' <i class="fa fa-fw wi wi-horizon-alt"></i> ' + e.localSunset), t.find(".footer.right").html("<i class='fa fa-fw fa-umbrella'></i>" + e.percentPrecip + "<br><i class='fa fa-fw wi wi-sprinkles'></i>" + e.humidity + "%")
+    t.find(".title2").html(e.weather + ", feels like " + e.feelsLike + "&deg;"), t.find(".icon.text").html(e.temperature + "&deg;"), t.find(".icon i").attr("class", "wi " + e.icon), t.find(".footer").html(e.localSunrise + ' <i class="fa fa-fw wi wi-horizon-alt"></i> ' + e.localSunset), t.find(".footer.right").html("<i class='fa fa-fw fa-umbrella'></i>" + e.percentPrecip + "%<br><i class='fa fa-fw wi wi-sprinkles'></i>" + e.humidity + "%")
 }
 function updateThermostat(t, e) {
     t.find(".title2").html("&#10044; " + e.thermostatFanMode +", " + e.thermostatOperatingState), t.find(".icon.setpoint").html(e.setpoint + "&deg;"), t.find(".footer").html("<i class='fa fa-fw wi wi-thermometer'></i>" + e.temperature + "&deg; <i class='fa fa-fw wi wi-sprinkles'></i>" + e.humidity + "%"), t.attr("data-setpoint", e.setpoint)
